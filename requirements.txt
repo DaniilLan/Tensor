@@ -1,1 +1,4 @@
 selenium==4.34.0
+pytest~=8.4.1
+webdriver-manager~=4.0.2
+requests~=2.32.4

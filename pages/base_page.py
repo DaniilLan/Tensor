@@ -1,22 +1,30 @@
-import time
-
-from selenium.common import NoSuchElementException
-from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
-from typing import List
+
 
 class BasePage:
     def __init__(self, driver: WebDriver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 15)
 
-    def expect_visible_element(self, locator):
+    def expect_visible_element(self, locator: tuple[str, str]):
         """Поиск элемента страницы по локатору."""
         return self.wait.until(
-            EC.presence_of_element_located(locator), message=f"Не удалось найти элемент {locator}"
+            EC.visibility_of_element_located(locator), message=f"Не удалось найти элемент {locator}"
+        )
+
+    def expect_clickable_element(self, locator: tuple[str, str]):
+        """Поиск элемента страницы по локатору."""
+        return self.wait.until(
+            EC.element_to_be_clickable(locator),
+            message=f"Локатор '{locator}' не стал кликабельным"
+        )
+
+    def expect_visible_elements(self, locator: tuple[str, str]):
+        """Поиск элемента страницы по локатору."""
+        return self.wait.until(
+            EC.visibility_of_all_elements_located(locator), message=f"Не удалось найти элемент {locator}"
         )
 
     def open(self, uri: str):
@@ -67,6 +75,24 @@ class BasePage:
         number = 0
         for size in sizes[1:]:
             number += 1
-            assert size == first_size, f"Размеры изображений не совпадают. Первое изображение: {first_size}, текущее {number}: {size}"
+            assert size == first_size, f"Размеры изображений не совпадают.\nПервое изображение: {first_size}, текущее {number}: {size}"
 
+    def switch_focus_last_tab(self):
+        """Переключение на последнюю открытую вкладку"""
+        self.wait.until(lambda d: len(d.window_handles) > 1)
+        all_windows = self.driver.window_handles
+        new_window = all_windows[-1]
+        self.driver.switch_to.window(new_window)
 
+    def scroll_to_element(self, locator: tuple[str, str]):
+        """Скроллить страницу к элементу"""
+        element = self.expect_visible_element(locator)
+        self.driver.execute_script("arguments[0].scrollIntoView();", element)
+
+    def quantity_elements(self, locator: tuple[str, str]):
+        """Получить количество элементов по локатору"""
+        return len(self.driver.find_elements(*locator))
+
+    def get_list_elements(self, locator):
+        """Получить список из элементов по локатору"""
+        return self.driver.find_elements(*locator)

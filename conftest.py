@@ -16,7 +16,7 @@ def driver():
         service=Service(ChromeDriverManager().install()),
         options=chrome_options
     )
-    driver.implicitly_wait(0.3)
+    driver.implicitly_wait(5)
     yield driver
     driver.quit()
 
