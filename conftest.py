@@ -26,13 +26,16 @@ def driver():
 @pytest.fixture()
 def driver_for_download():
     chrome_options = Options()
-    download_path = r"C:\Users\dlancov\PycharmProjects\Tensor\test_downloads\\"
+    download_path = r"C:\Users\dlancov\PycharmProjects\Tensor\test_downloads"
     prefs = {
         "download.default_directory": download_path,
         "download.prompt_for_download": False,
         "safebrowsing.enabled": False
+
     }
     chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--disable-infobars")
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=chrome_options

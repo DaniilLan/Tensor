@@ -106,35 +106,27 @@ class SabyPage(BasePage):
 
         size_text = self.get_text(link_download)
         expected_size_mb = float(size_text.split()[-2])
-
-        project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        download_dir = os.path.join(project_dir, "test_downloads")
+        download_dir = r"C:\Users\dlancov\PycharmProjects\Tensor\test_downloads"
 
         max_wait_time = 60
-        wait_interval = 1
         waited_time = 0
         file_found = False
         downloaded_file = None
 
         while not file_found and waited_time < max_wait_time:
-            time.sleep(wait_interval)
-            waited_time += wait_interval
             files = os.listdir(download_dir)
             for file in files:
                 if file.endswith('.exe'):
                     downloaded_file = os.path.join(download_dir, file)
                     file_found = True
                     break
-
         assert file_found, f"Файл не был скачан в течение {max_wait_time} секунд"
 
         file_size_bytes = os.path.getsize(downloaded_file)
         actual_size_mb = file_size_bytes / (1024 * 1024)
-
-        assert abs(actual_size_mb - expected_size_mb) < 0.1, \
-            f"Размер файла не совпадает. Ожидалось: {expected_size_mb} МБ, фактически: {actual_size_mb:.2f} МБ"
-
-        return downloaded_file
+        assert abs(actual_size_mb - expected_size_mb) < 0.1, (f"Размер файла не совпадает.\n"
+                                                        f"Ожидалось: {expected_size_mb} МБ\n"
+                                                        f"Фактически: {actual_size_mb:.2f} МБ")
 
 
 
