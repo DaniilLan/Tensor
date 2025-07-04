@@ -10,7 +10,7 @@ from pages.main_page.saby_page import SabyPage
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_make_report(item):
+def pytest_runtest_makereport(item):
     outcome = yield
     rep = outcome.get_result()
     setattr(item, f"rep_{rep.when}", rep)
