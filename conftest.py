@@ -1,12 +1,34 @@
 import os
+import pytest
 
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-
 from pages.main_page.saby_page import SabyPage
-import pytest
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_make_report(item):
+    outcome = yield
+    rep = outcome.get_result()
+    setattr(item, f"rep_{rep.when}", rep)
+    if rep.when == "call" and rep.failed:
+        driver = None
+        for fixture_name in item.fixturenames:
+            if fixture_name in ("driver", "driver_for_download"):
+                driver = item.funcargs[fixture_name]
+                break
+        if driver is not None and isinstance(driver, webdriver.Remote):
+            screenshots_dir = os.path.join(os.getcwd(), "screenshots")
+            os.makedirs(screenshots_dir, exist_ok=True)
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            test_name = item.nodeid.split("::")[-1]
+            screenshot_name = f"{test_name}_{timestamp}.png"
+            screenshot_path = os.path.join(screenshots_dir, screenshot_name)
+            driver.save_screenshot(screenshot_path)
+            print(f"\nScreenshot saved to: {screenshot_path}")
 
 
 @pytest.fixture()
