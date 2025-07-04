@@ -132,10 +132,14 @@ class SabyPage(BasePage):
 
         file_size_bytes = os.path.getsize(downloaded_file)
         actual_size_mb = file_size_bytes / (1024 * 1024)
-        assert abs(actual_size_mb - expected_size_mb+1) < 0.1, (f"Размер файла не совпадает.\n"
-                                                        f"Ожидалось: {expected_size_mb} МБ\n"
-                                                        f"Фактически: {actual_size_mb:.2f} МБ")
-
+        try:
+            assert abs(actual_size_mb - expected_size_mb) < 0.1, (
+                f"Размер файла не совпадает.\n"
+                f"Ожидалось: {expected_size_mb} МБ\n"
+                f"Фактически: {actual_size_mb:.2f} МБ")
+        finally:
+            if downloaded_file and os.path.exists(downloaded_file):
+                os.remove(downloaded_file)
 
 
 

@@ -52,8 +52,8 @@ def driver_for_download():
     prefs = {
         "download.default_directory": download_path,
         "download.prompt_for_download": False,
-        "safebrowsing.enabled": False
-
+        "safebrowsing.enabled": False,
+        "download.open_pdf_in_system_reader": False,
     }
     chrome_options.add_experimental_option("prefs", prefs)
     chrome_options.add_argument("--start-maximized")
