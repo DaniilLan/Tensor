@@ -22,7 +22,7 @@ class BasePage:
         )
 
     def expect_visible_elements(self, locator: tuple[str, str]):
-        """Поиск элемента страницы по локатору."""
+        """Поиск элемента страницы по локатору"""
         return self.wait.until(
             EC.visibility_of_all_elements_located(locator), message=f"Не удалось найти элемент {locator}"
         )
@@ -50,6 +50,11 @@ class BasePage:
         element = self.expect_visible_element(locator)
         return element.text
 
+    def get_text_all_elements(self, locator: tuple[str, str]):
+        """Получить список текстов всех элементов, соответствующих локатору"""
+        elements = self.expect_visible_elements(locator)
+        return [element.text for element in elements if element.text]
+
     def expect_text(self, locator: tuple[str, str], expected_text: str):
         """Проверка соответствия текста"""
         element = self.expect_visible_element(locator)
@@ -57,7 +62,7 @@ class BasePage:
         assert actual_text == expected_text, f"Текст не совпадает.\nОжидалось: '{expected_text}', получено: '{actual_text}'"
 
     def check_images_equal_size(self, locator: tuple[str, str]):
-        """Проверяет, что все изображения по локатору имеют одинаковый размер."""
+        """Проверяет, что все изображения по локатору имеют одинаковый размер"""
         images = self.wait.until(
             EC.visibility_of_all_elements_located(locator),
             message=f"Не найдено изображения по локатору {locator}"

@@ -1,5 +1,6 @@
 import requests
 
+
 def get_region():
     try:
         response = requests.get('https://api.sypexgeo.net/json/')
@@ -8,3 +9,4 @@ def get_region():
         return region.replace("область", "обл.")
     except Exception as e:
         return f"Ошибка: {e}"
+
