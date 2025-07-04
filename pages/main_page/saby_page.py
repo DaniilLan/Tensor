@@ -1,6 +1,8 @@
 import os
 import time
 
+import allure
+
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 from core.utils.data_generators import get_region
@@ -40,19 +42,23 @@ class SabyPage(BasePage):
 
     def click_on_detail_block_power_is_in_people(self):
         self.click(Locators.LINK_DETAIL_POWER_IS_IN_PEOPLE)
-        assert self.get_url() == 'https://tensor.ru/about'
+        fact_url = self.get_url()
+        expected = 'https://tensor.ru/about'
+        assert fact_url == expected, allure.description('Фактический URL страницы не соответствует ожиданию\n'
+                                                                               f'Ожидаемый URL: {expected}\n'
+                                                                               f'Фактический: {fact_url}')
 
     def check_size_photo_chronology_working(self):
         self.scroll_to_element(Locators.TITLE_SECTION_WORKING)
         self.check_images_equal_size(Locators.PHOTO_IN_SECTION_WORKING)
 
-    def check_region(self, region=None):
+    def check_region(self, region: str = None):
         region_on_page = self.get_text(Locators.LINK_REGION_HEADER)
         if region is not None:
             region_current = region
         else:
             region_current = get_region()
-        assert region_on_page == region_current, (f'Текущий регион не соответствует сайту.\n'
+        assert region_on_page == region_current, allure.description(f'Текущий регион не соответствует сайту.\n'
                                                   f'На сайт: {region_on_page}\n'
                                                   f'Текущий: {region_current}')
 
@@ -64,7 +70,7 @@ class SabyPage(BasePage):
             quantity_in_region = int(quantity_text)
             sum_region += quantity_in_region
         len_list = self.quantity_elements(Locators.LIST_PARTNERS)
-        assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
+        assert len_list == sum_region, allure.description(f'Количество филиалов не соответствует количеству в списке.\n'
                                         f'Сумма: {sum_region}\n'
                                         f'Сумма в списке: {len_list}')
 
@@ -80,19 +86,19 @@ class SabyPage(BasePage):
         self.expect_visible_element((By.XPATH, f'//span[@class="sbis_ru-Region-Chooser ml-16 ml-xm-0"]/span[text()="{region}"]'))
 
     # Пример двух проверок для второго сценария проверки
-    def check_name_partners(self, region):
+    def check_name_partners(self, region: str):
         dr = DataRegion()
         name_partners = self.get_text_all_elements(Locators.NAME_PARTNERS)
         db_name_partners = dr.data_region[f"{region}"]['all_name_partners']
-        assert name_partners == db_name_partners, (f'Данные имен филиалов не соответствуют БД\n'
+        assert name_partners == db_name_partners, allure.description(f'Данные имен филиалов не соответствуют БД\n'
                                                    f'Сайт: {name_partners}\n'
                                                    f'Бд: {db_name_partners}')
 
-    def check_cities_partners(self, region):
+    def check_cities_partners(self, region: str):
         dr = DataRegion()
         name_partners = self.get_text_all_elements(Locators.CITIES_REGION)
         db_name_partners = dr.data_region[f"{region}"]['city']
-        assert name_partners == db_name_partners, (f'Данные имен филиалов не соответствуют БД\n'
+        assert name_partners == db_name_partners, allure.description(f'Данные имен филиалов не соответствуют БД\n'
                                                    f'Сайт: {name_partners}\n'
                                                    f'Бд: {db_name_partners}')
 
@@ -106,7 +112,7 @@ class SabyPage(BasePage):
 
         size_text = self.get_text(link_download)
         expected_size_mb = float(size_text.split()[-2])
-        download_dir = r"C:\Users\dlancov\PycharmProjects\Tensor\test_downloads"
+        download_path = os.path.join(os.getcwd(), "test_downloads")
 
         max_wait_time = 60
         waited_time = 0
@@ -114,17 +120,19 @@ class SabyPage(BasePage):
         downloaded_file = None
 
         while not file_found and waited_time < max_wait_time:
-            files = os.listdir(download_dir)
+            time.sleep(1)
+            waited_time += 1
+            files = os.listdir(download_path)
             for file in files:
                 if file.endswith('.exe'):
-                    downloaded_file = os.path.join(download_dir, file)
+                    downloaded_file = os.path.join(download_path, file)
                     file_found = True
                     break
         assert file_found, f"Файл не был скачан в течение {max_wait_time} секунд"
 
         file_size_bytes = os.path.getsize(downloaded_file)
         actual_size_mb = file_size_bytes / (1024 * 1024)
-        assert abs(actual_size_mb - expected_size_mb) < 0.1, (f"Размер файла не совпадает.\n"
+        assert abs(actual_size_mb - expected_size_mb) < 0.1, allure.description(f"Размер файла не совпадает.\n"
                                                         f"Ожидалось: {expected_size_mb} МБ\n"
                                                         f"Фактически: {actual_size_mb:.2f} МБ")
 

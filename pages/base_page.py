@@ -80,7 +80,8 @@ class BasePage:
         number = 0
         for size in sizes[1:]:
             number += 1
-            assert size == first_size, f"Размеры изображений не совпадают.\nПервое изображение: {first_size}, текущее {number}: {size}"
+            assert size == first_size, (f"Размеры изображений не совпадают.\n"
+                                        f"Первое изображение: {first_size}, текущее {number}: {size}")
 
     def switch_focus_last_tab(self):
         """Переключение на последнюю открытую вкладку"""
@@ -98,6 +99,6 @@ class BasePage:
         """Получить количество элементов по локатору"""
         return len(self.driver.find_elements(*locator))
 
-    def get_list_elements(self, locator):
+    def get_list_elements(self, locator: tuple[str, str]):
         """Получить список из элементов по локатору"""
         return self.driver.find_elements(*locator)
