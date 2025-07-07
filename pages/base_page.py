@@ -59,8 +59,7 @@ class BasePage:
         """Проверка соответствия текста"""
         element = self.expect_visible_element(locator)
         actual_text = element.text
-        assert actual_text == expected_text, (f"Текст не совпадает.\n"
-                                              f"Ожидалось: '{expected_text}', получено: '{actual_text}'")
+        assert actual_text == expected_text, f"Текст не совпадает.\nОжидалось: '{expected_text}', получено: '{actual_text}'"
 
     def check_images_equal_size(self, locator: tuple[str, str]):
         """Проверяет, что все изображения по локатору имеют одинаковый размер"""

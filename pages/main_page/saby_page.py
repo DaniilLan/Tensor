@@ -44,7 +44,7 @@ class SabyPage(BasePage):
         self.click(Locators.LINK_DETAIL_POWER_IS_IN_PEOPLE)
         fact_url = self.get_url()
         expected = 'https://tensor.ru/about'
-        assert fact_url == expected, ('Фактический URL страницы не соответствует ожиданию\n'
+        assert fact_url == expected, allure.description('Фактический URL страницы не соответствует ожиданию\n'
                                                                                f'Ожидаемый URL: {expected}\n'
                                                                                f'Фактический: {fact_url}')
 
@@ -58,7 +58,7 @@ class SabyPage(BasePage):
             region_current = region
         else:
             region_current = get_region()
-        assert region_on_page == region_current, (f'Текущий регион не соответствует сайту.\n'
+        assert region_on_page == region_current, allure.description(f'Текущий регион не соответствует сайту.\n'
                                                   f'На сайт: {region_on_page}\n'
                                                   f'Текущий: {region_current}')
 
@@ -70,7 +70,7 @@ class SabyPage(BasePage):
             quantity_in_region = int(quantity_text)
             sum_region += quantity_in_region
         len_list = self.quantity_elements(Locators.LIST_PARTNERS)
-        assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
+        assert len_list == sum_region, allure.description(f'Количество филиалов не соответствует количеству в списке.\n'
                                         f'Сумма: {sum_region}\n'
                                         f'Сумма в списке: {len_list}')
 
@@ -90,7 +90,7 @@ class SabyPage(BasePage):
         dr = DataRegion()
         name_partners = self.get_text_all_elements(Locators.NAME_PARTNERS)
         db_name_partners = dr.data_region[f"{region}"]['all_name_partners']
-        assert name_partners == db_name_partners, (f'Данные имен филиалов не соответствуют БД\n'
+        assert name_partners == db_name_partners, allure.description(f'Данные имен филиалов не соответствуют БД\n'
                                                    f'Сайт: {name_partners}\n'
                                                    f'Бд: {db_name_partners}')
 
@@ -98,7 +98,7 @@ class SabyPage(BasePage):
         dr = DataRegion()
         name_partners = self.get_text_all_elements(Locators.CITIES_REGION)
         db_name_partners = dr.data_region[f"{region}"]['city']
-        assert name_partners == db_name_partners, (f'Данные имен филиалов не соответствуют БД\n'
+        assert name_partners == db_name_partners, allure.description(f'Данные имен филиалов не соответствуют БД\n'
                                                    f'Сайт: {name_partners}\n'
                                                    f'Бд: {db_name_partners}')
 
@@ -132,14 +132,10 @@ class SabyPage(BasePage):
 
         file_size_bytes = os.path.getsize(downloaded_file)
         actual_size_mb = file_size_bytes / (1024 * 1024)
-        try:
-            assert abs(actual_size_mb - expected_size_mb) < 0.1, (
-                f"Размер файла не совпадает.\n"
-                f"Ожидалось: {expected_size_mb} МБ\n"
-                f"Фактически: {actual_size_mb:.2f} МБ")
-        finally:
-            if downloaded_file and os.path.exists(downloaded_file):
-                os.remove(downloaded_file)
+        assert abs(actual_size_mb - expected_size_mb) < 0.1, allure.description(f"Размер файла не совпадает.\n"
+                                                        f"Ожидалось: {expected_size_mb} МБ\n"
+                                                        f"Фактически: {actual_size_mb:.2f} МБ")
+
 
 
 

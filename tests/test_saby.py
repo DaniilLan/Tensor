@@ -1,7 +1,6 @@
 import pytest
 import allure
 
-
 @allure.epic("Тесты сайта Saby")
 @allure.feature("Основные сценарии тех. задания")
 class TestSaby:
@@ -22,7 +21,7 @@ class TestSaby:
 
     @allure.story("Второй сценарий")
     @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.parametrize('region', ['Камчатский край'], ids=lambda reg: f"Регион: {reg}")
+    @pytest.mark.parametrize('region', ['Камчатский край'], ids=lambda x: f"Регион: {x}")
     def test_second_scenario(self, page_saby, region):
         with allure.step("Переход в раздел контактов"):
             page_saby.go_to_contact_offices()

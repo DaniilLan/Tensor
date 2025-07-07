@@ -1,4 +1,5 @@
 import os
+
 import requests
 
 
@@ -10,4 +11,3 @@ def get_region():
         return region.replace("область", "обл.")
     except Exception as e:
         return f"Ошибка: {e}"
-
