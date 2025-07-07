@@ -1,5 +1,4 @@
 import os
-
 import requests
 
 
@@ -12,4 +11,3 @@ def get_region():
     except Exception as e:
         return f"Ошибка: {e}"
 
-print(os.path.join(os.path.dirname(__file__), "test_downloads"))
