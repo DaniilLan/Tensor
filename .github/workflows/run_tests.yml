@@ -22,15 +22,27 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install selenium pytest allure-pytest webdriver-manager
+          pip install selenium pytest allure-pytest webdriver-manager requests
 
-      - name: Run tests with pytest
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          chrome_version=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
+          wget https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chrome_version -O chromedriver_version.txt
+          chromedriver_version=$(cat chromedriver_version.txt)
+          wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          chromedriver --version
+
+      - name: Run tests
         run: |
           python -m pytest tests/ -v --alluredir=allure-results
 
-      - name: Generate Allure report
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v3
         if: always()
-        uses: simple-elf/allure-report-action@v1
         with:
-          allure_results: allure-results
+          name: allure-report
+          path: allure-results/
