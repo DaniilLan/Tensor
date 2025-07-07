@@ -32,15 +32,14 @@ class TestSaby:
             page_saby.check_partners_region()
         with allure.step("Открытие списка всех регионов"):
             page_saby.open_all_regions()
-        test_region = region
-        with allure.step(f"Выбор региона {test_region}"):
-            page_saby.selected_region(test_region)
-        with allure.step(f"Проверка региона {test_region}"):
-            page_saby.check_region(test_region)
-        with allure.step(f"Проверка имён партнёров в регионе {test_region}"):
-            page_saby.check_name_partners(test_region)
-        with allure.step(f"Проверка городов партнёров в регионе {test_region}"):
-            page_saby.check_cities_partners(test_region)
+        with allure.step(f"Выбор региона {region}"):
+            page_saby.selected_region(region)
+        with allure.step(f"Проверка региона {region}"):
+            page_saby.check_region(region)
+        with allure.step(f"Проверка имён партнёров в регионе {region}"):
+            page_saby.check_name_partners(region)
+        with allure.step(f"Проверка городов партнёров в регионе {region}"):
+            page_saby.check_cities_partners(region)
 
     @allure.story("Третий сценарий")
     @allure.severity(allure.severity_level.NORMAL)
