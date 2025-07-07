@@ -1,6 +1,7 @@
 import pytest
 import allure
 
+
 @allure.epic("Тесты сайта Saby")
 @allure.feature("Основные сценарии тех. задания")
 class TestSaby:
@@ -48,3 +49,4 @@ class TestSaby:
             download_page.open_page_download_local_app()
         with allure.step("Загрузка веб-установщика и проверка размера скаченного файла"):
             download_page.download_web_installer_in_test_dir()
+
