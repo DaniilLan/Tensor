@@ -1,6 +1,7 @@
 import pytest
 import allure
 
+
 @allure.epic("Тесты сайта Saby")
 @allure.feature("Основные сценарии тех. задания")
 class TestSaby:
