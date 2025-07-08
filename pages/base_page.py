@@ -15,7 +15,7 @@ class BasePage:
         )
 
     def expect_clickable_element(self, locator: tuple[str, str]):
-        """Поиск элемента страницы по локатору."""
+        """Проверка на кликабельность элемента по локатору"""
         return self.wait.until(
             EC.element_to_be_clickable(locator),
             message=f"Локатор '{locator}' не стал кликабельным"
