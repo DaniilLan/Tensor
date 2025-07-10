@@ -68,7 +68,7 @@ class SabyPage(BasePage):
         sum_region = 0
         region = self.get_text(Locators.LINK_REGION_HEADER)
         if region in ["г. Москва", "г. Санкт-Петербург"]:
-            sum_region = self.get_text_by_hidden_element(Locators.QUANTITY_PARTNERS)
+            sum_region = int(self.get_text_by_hidden_element(Locators.QUANTITY_PARTNERS))
         else:
             for quantity_element in self.driver.find_elements(*Locators.QUANTITY_PARTNERS):
                 quantity_text = quantity_element.text
