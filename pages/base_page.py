@@ -14,6 +14,12 @@ class BasePage:
             EC.visibility_of_element_located(locator), message=f"Не удалось найти элемент {locator}"
         )
 
+    def expect_presence_element(self, locator: tuple[str, str]):
+        """Поиск элемента в DOM по локатору."""
+        return self.wait.until(
+            EC.presence_of_element_located(locator), message=f"Не удалось найти элемент {locator}"
+        )
+
     def expect_clickable_element(self, locator: tuple[str, str]):
         """Проверка на кликабельность элемента по локатору"""
         return self.wait.until(
@@ -47,7 +53,7 @@ class BasePage:
 
     def get_text(self, locator: tuple[str, str]):
         """Получить текст элемента"""
-        element = self.expect_visible_element(locator)
+        element = self.expect_presence_element(locator)
         return element.text
 
     def get_text_all_elements(self, locator: tuple[str, str]):
