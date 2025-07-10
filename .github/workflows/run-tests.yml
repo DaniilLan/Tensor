@@ -1,0 +1,45 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libasound2 \
+          libgbm-dev \
+          xvfb \
+          google-chrome-stable
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install selenium webdriver-manager pytest
+
+    - name: Install ChromeDriver
+      run: |
+        CHROME_DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+        wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        chmod +x chromedriver
+        sudo mv chromedriver /usr/local/bin/
+        rm chromedriver_linux64.zip
+
+    - name: Run Selenium tests with XVFB
+      run: |
+        xvfb-run pytest -v

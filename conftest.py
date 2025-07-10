@@ -36,6 +36,7 @@ def driver():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-infobars")
+    chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=chrome_options
