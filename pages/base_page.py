@@ -53,8 +53,13 @@ class BasePage:
 
     def get_text(self, locator: tuple[str, str]):
         """Получить текст элемента"""
-        element = self.expect_presence_element(locator)
+        element = self.expect_visible_element(locator)
         return element.text
+
+    def get_text_by_hidden_element(self, locator: tuple[str, str]):
+        """Получить текст скрытого элемента"""
+        element = self.expect_presence_element(locator)
+        return element.get_attribute("textContent")
 
     def get_text_all_elements(self, locator: tuple[str, str]):
         """Получить список текстов всех элементов, соответствующих локатору"""
