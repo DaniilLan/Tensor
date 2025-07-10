@@ -67,14 +67,18 @@ class SabyPage(BasePage):
     # Пример для первого сценария проверки.
     def check_partners_region(self):
         sum_region = 0
-        for quantity_element in self.driver.find_elements(*Locators.QUANTITY_PARTNERS):
-            quantity_text = quantity_element.text
-            quantity_in_region = int(quantity_text)
-            sum_region += quantity_in_region
-        len_list = self.quantity_elements(Locators.LIST_PARTNERS)
-        assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
-                                        f'Сумма: {sum_region}\n'
-                                        f'Сумма в списке: {len_list}')
+        region = self.get_text(Locators.LINK_REGION_HEADER)
+        if region in ["г. Москва", "г. Санкт-Петербург"]:
+            sum_region = self.get_text(Locators.QUANTITY_PARTNERS)
+        else:
+            for quantity_element in self.driver.find_elements(*Locators.QUANTITY_PARTNERS):
+                quantity_text = quantity_element.text
+                quantity_in_region = int(quantity_text)
+                sum_region += quantity_in_region
+            len_list = self.quantity_elements(Locators.LIST_PARTNERS)
+            assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
+                                            f'Сумма: {sum_region}\n'
+                                            f'Сумма в списке: {len_list}')
 
     def open_all_regions(self):
         self.click(Locators.LINK_REGION_HEADER)
