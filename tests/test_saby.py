@@ -22,8 +22,9 @@ class TestSaby:
 
     @allure.story("Второй сценарий")
     @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.parametrize('region', ['Камчатский край'], ids=lambda x: f"Регион: {x}")
+    @pytest.mark.parametrize('region', ['Камчатский край']) # Добавил allure.dynamic для красоты названия кейса в отчете, убрал -> ids=lambda x: f"Регион: {x}")
     def test_second_scenario(self, page_saby, region):
+        allure.dynamic.title(f"Проверка региона: {region}")
         with allure.step("Переход в раздел контактов"):
             page_saby.go_to_contact_offices()
         with allure.step("Проверка текущего региона"):
