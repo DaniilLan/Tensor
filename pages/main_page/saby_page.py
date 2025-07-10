@@ -135,7 +135,12 @@ class SabyPage(BasePage):
         assert abs(actual_size_mb - expected_size_mb) < 0.1, allure.description(f"Размер файла не совпадает.\n"
                                                         f"Ожидалось: {expected_size_mb} МБ\n"
                                                         f"Фактически: {actual_size_mb:.2f} МБ")
-
+        try:
+            if downloaded_file and os.path.exists(downloaded_file):
+                os.remove(downloaded_file)
+                print(f"Файл {downloaded_file} удален")
+        except Exception as e:
+            print(f"Ошибка при удалении файла {downloaded_file}: {str(e)}")
 
 
 
