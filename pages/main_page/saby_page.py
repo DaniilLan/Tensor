@@ -84,9 +84,7 @@ class SabyPage(BasePage):
         self.expect_visible_element(Locators.WINDOW_ALL_REGIONS)
 
     def selected_region(self, region: str):
-        time.sleep(0.5)
-        # Увы, так и не смог локализовать проблему с кликом по региону из списка:(
-        # Поставил явную задержку для прогрузки окна регионов
+        time.sleep(1)
         self.click((By.XPATH, f'//span[@title="{region}"]/span'))
         self.expect_visible_element((By.XPATH, f'//span[@class="sbis_ru-Region-Chooser ml-16 ml-xm-0"]/span[text()="{region}"]'))
 
