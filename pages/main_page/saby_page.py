@@ -75,10 +75,10 @@ class SabyPage(BasePage):
                 quantity_text = quantity_element.text
                 quantity_in_region = int(quantity_text)
                 sum_region += quantity_in_region
-            len_list = self.quantity_elements(Locators.LIST_PARTNERS)
-            assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
-                                            f'Сумма: {sum_region}\n'
-                                            f'Сумма в списке: {len_list}')
+        len_list = self.quantity_elements(Locators.LIST_PARTNERS)
+        assert len_list == sum_region, (f'Количество филиалов не соответствует количеству в списке.\n'
+                                        f'Сумма: {sum_region}\n'
+                                        f'Сумма в списке: {len_list}')
 
     def open_all_regions(self):
         self.click(Locators.LINK_REGION_HEADER)
