@@ -58,6 +58,8 @@ class SabyPage(BasePage):
             region_current = region
         else:
             region_current = get_region()
+            if region_current not in DataRegion.regions:
+                region_current = 'г. Москва'
         assert region_on_page == region_current, (f'Текущий регион не соответствует сайту.\n'
                                                   f'На сайт: {region_on_page}\n'
                                                   f'Текущий: {region_current}')
